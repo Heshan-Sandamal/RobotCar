@@ -7,6 +7,10 @@ package microcontrollergui;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import robotcar.UserController;
 
 /**
  *
@@ -14,11 +18,14 @@ import java.awt.event.KeyEvent;
  */
 public class MicroGUI extends javax.swing.JFrame {
 
+    private UserController userController;
+
     /**
      * Creates new form MicroGUI
      */
     public MicroGUI() {
         initComponents();
+        userController = new UserController();
     }
 
     /**
@@ -123,6 +130,11 @@ public class MicroGUI extends javax.swing.JFrame {
                 stop_btnMouseClicked(evt);
             }
         });
+        stop_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stop_btnActionPerformed(evt);
+            }
+        });
         getContentPane().add(stop_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(487, 433, 102, 100));
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 658, 26));
 
@@ -156,117 +168,135 @@ public class MicroGUI extends javax.swing.JFrame {
 
     private void right_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_right_btnActionPerformed
         rightClick();
-        
+
     }//GEN-LAST:event_right_btnActionPerformed
 
     private void back_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_btnActionPerformed
         backClick();
-       
+
     }//GEN-LAST:event_back_btnActionPerformed
 
     private void forward_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forward_btnActionPerformed
         forwardClick();
-        
+
     }//GEN-LAST:event_forward_btnActionPerformed
 
     private void left_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_left_btnActionPerformed
         leftClick();
-        
+
     }//GEN-LAST:event_left_btnActionPerformed
 
     private void stop_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stop_btnMouseClicked
         System.out.println("Method to stop the motion");
         update_Table(100, 120, 55, 12);
-        
+
     }//GEN-LAST:event_stop_btnMouseClicked
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         System.out.println("I am pressed");
-        if (evt.getKeyCode() == KeyEvent.VK_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
             System.out.println("I am pressed");
-           forwardClick();
+            forwardClick();
         }
-        if (evt.getKeyCode() == KeyEvent.VK_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             backClick();
         }
-        if (evt.getKeyCode() == KeyEvent.VK_RIGHT){
+        if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
             rightClick();
         }
-        if (evt.getKeyCode() == KeyEvent.VK_LEFT){
+        if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
             leftClick();
         }
     }//GEN-LAST:event_formKeyPressed
 
     private void jLabel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel1KeyPressed
-    
+
     }//GEN-LAST:event_jLabel1KeyPressed
 
-    public void leftClick(){
-        System.out.println("Moves left");
+    private void stop_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stop_btnActionPerformed
+
+        stopClick();
+
+    }//GEN-LAST:event_stop_btnActionPerformed
+
+    public void leftClick() {
+        try {
+            userController.TurnLeft();
+            System.out.println("Turned left");
+        } catch (IOException ex) {
+            Logger.getLogger(MicroGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    public void rightClick(){
-        System.out.println("Moves right");
+
+    public void rightClick() {
+        try {
+            userController.TurnRight();
+            System.out.println("Turned Right");
+        } catch (IOException ex) {
+            Logger.getLogger(MicroGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    public void forwardClick(){
+
+    public void forwardClick() {
+        try {
+            userController.forward();
+        } catch (IOException ex) {
+            Logger.getLogger(MicroGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println("Moves forward");
+
     }
-    public void backClick(){
+
+    public void backClick() {
+        try {
+            userController.backward();
+        } catch (IOException ex) {
+            Logger.getLogger(MicroGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println("Moves backward");
     }
+
     /**
      * @param args the command line arguments
      */
-    
-    public void update_Table(int left,int right,int straight,int back){
+    public void update_Table(int left, int right, int straight, int back) {
         Observer_table.setValueAt(left, 0, 0);
         Observer_table.setValueAt(right, 0, 1);
         Observer_table.setValueAt(straight, 0, 2);
         Observer_table.setValueAt(back, 0, 3);
-        
-        if(left>100){
+
+        if (left > 100) {
             left_signal.setBackground(new java.awt.Color(0, 153, 0));
-        }
-        else if(left>50){
+        } else if (left > 50) {
             left_signal.setBackground(Color.YELLOW);
-        }
-        else{
+        } else {
             left_signal.setBackground(Color.RED);
         }
-        
-        
-        if(right>100){
+
+        if (right > 100) {
             right_signal.setBackground(new java.awt.Color(0, 153, 0));
-        }
-        else if(right>50){
+        } else if (right > 50) {
             right_signal.setBackground(Color.YELLOW);
-        }
-        else{
+        } else {
             right_signal.setBackground(Color.RED);
         }
-        if(straight>100){
+        if (straight > 100) {
             up_signal.setBackground(new java.awt.Color(0, 153, 0));
-        }
-        else if(straight>50){
+        } else if (straight > 50) {
             up_signal.setBackground(Color.YELLOW);
-        }
-        else{
+        } else {
             up_signal.setBackground(Color.RED);
         }
-        if(back>100){
+        if (back > 100) {
             down_signal.setBackground(new java.awt.Color(0, 153, 0));
-        }
-        else if(back>50){
+        } else if (back > 50) {
             down_signal.setBackground(Color.YELLOW);
-        }
-        else{
+        } else {
             down_signal.setBackground(Color.RED);
         }
-        
-        
-        
+
     }
-            
-            
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -295,8 +325,7 @@ public class MicroGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MicroGUI().setVisible(true);
-            
-            
+
             }
         });
     }
@@ -317,4 +346,12 @@ public class MicroGUI extends javax.swing.JFrame {
     private javax.swing.JButton stop_btn;
     private javax.swing.JButton up_signal;
     // End of variables declaration//GEN-END:variables
+
+    private void stopClick() {
+        try {
+            userController.stop();
+        } catch (IOException ex) {
+            Logger.getLogger(MicroGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

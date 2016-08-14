@@ -5,6 +5,8 @@
  */
 package robotcar;
 
+import java.io.IOException;
+
 /**
  *
  * @author Heshan Sandamal
@@ -15,34 +17,45 @@ public class UserController {
     private double centerSonarVal;
     private double RIghtSonarVal;
 
-    private double leftAngleVal;
-    private double RightAngleVal;
+    private double angle=0;
+    
 
-    public void TurnLeft() {
+    public void TurnLeft() throws IOException {
+        angle--;
+        NetworkConnector.write("l");
         
     }
 
-    public void TurnRight(int val) {
+    public void TurnRight() throws IOException {
+        angle++;
+        NetworkConnector.write("r");
     }
 
-    public void forward(int val) {
+    public void forward() throws IOException {
+        NetworkConnector.write("f");
     }
 
-    public void backward() {
+    public void backward() throws IOException {
+         NetworkConnector.write("b");
+    }
+    
+    public void stop() throws IOException{
+        NetworkConnector.write("s");
+    }
+
+    public void setCenterSonarVal(double centerSonarVal) {
+        this.centerSonarVal = centerSonarVal;
+    }
+
+    public void setLeftSonarVal(double leftSonarVal) {
+        this.leftSonarVal = leftSonarVal;
+    }
+
+    public void setRIghtSonarVal(double RIghtSonarVal) {
+        this.RIghtSonarVal = RIghtSonarVal;
     }
 
 
 
-    public double getCenterSonarVal() {
-        return centerSonarVal;
-    }
-
-    public double getLeftSonarVal() {
-        return leftSonarVal;
-    }
-
-    public double getRIghtSonarVal() {
-        return RIghtSonarVal;
-    }
 
 }

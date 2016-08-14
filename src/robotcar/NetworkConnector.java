@@ -14,6 +14,8 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +23,7 @@ import java.util.Date;
  */
 public class NetworkConnector {
 
-    private static final int port = 10007;
+    private static final int port = 8080;
     private static String serverName = "192.168.43.165";
     private static Socket client;
     private static Socket clientSocket;
@@ -35,28 +37,48 @@ public class NetworkConnector {
         client = new Socket(serverName, port);
         System.out.println("Just connected to " + client.getRemoteSocketAddress());
         outputStream = client.getOutputStream();
+        //inputStream = client.getInputStream();
         write("write val");
-        client.close();
+        //client.close();
     }
 
     public static void startServer() throws IOException {
-        ServerSocket sSocket = new ServerSocket(5000);
-        System.out.println("Server started at: " + new Date());
 
-        //Wait for a client to connect
-        clientSocket = sSocket.accept();
-        System.out.println("Server accepts connection from " + clientSocket.getRemoteSocketAddress());
+            ServerSocket sSocket = new ServerSocket(5000);
+            System.out.println("Server started at: " + new Date());
 
-        inputStream = clientSocket.getInputStream();
-        outputStream = clientSocket.getOutputStream();
+            //Wait for a client to connect
+            clientSocket = sSocket.accept();
+            System.out.println("Server accepts connection from " + clientSocket.getRemoteSocketAddress());
 
-        read();
-        //socket.close();
+            inputStream = clientSocket.getInputStream();
+            //outputStream = clientSocket.getOutputStream();
+
+            new Thread() {
+
+                @Override
+                public void run() {
+                    try {
+                        NetworkConnector.read();
+                    } catch (IOException ex) {
+                        Logger.getLogger(RobotCar.class.getName()).log(Level.SEVERE, null, ex);
+                    }finally{
+                        try {
+                            clientSocket.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(NetworkConnector.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+
+            }.start();
+        
     }
 
     public static void write(String cmd) throws IOException {
         DataOutputStream dOut = new DataOutputStream(outputStream);
-        dOut.writeUTF(cmd);
+        dOut.writeChars(cmd);
+        System.out.println(cmd);
     }
 
     public static void read() throws IOException {
@@ -77,11 +99,15 @@ public class NetworkConnector {
                 clientData.append(redDataText);
                 break;
             }
-            System.out.println("Data From Client :" + clientData.toString());
-            write("val");
+            processInputValue(clientData.toString());
+            //write("val");
 
         }
 
+    }
+
+    public static void processInputValue(String inputVal) {
+        System.out.println(inputVal);
     }
 
 }
