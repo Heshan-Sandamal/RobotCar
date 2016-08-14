@@ -35,11 +35,9 @@ public class NetworkConnector {
 
         System.out.println("Connecting to " + serverName + " on port " + port);
         client = new Socket(serverName, port);
-        System.out.println("Just connected to " + client.getRemoteSocketAddress());
+        System.out.println("Connected Client is " + client.getRemoteSocketAddress());
         outputStream = client.getOutputStream();
-        //inputStream = client.getInputStream();
-        write("write val");
-        //client.close();
+
     }
 
     public static void startServer() throws IOException {
@@ -52,7 +50,6 @@ public class NetworkConnector {
             System.out.println("Server accepts connection from " + clientSocket.getRemoteSocketAddress());
 
             inputStream = clientSocket.getInputStream();
-            //outputStream = clientSocket.getOutputStream();
 
             new Thread() {
 
@@ -78,7 +75,7 @@ public class NetworkConnector {
     public static void write(String cmd) throws IOException {
         DataOutputStream dOut = new DataOutputStream(outputStream);
         dOut.writeChars(cmd);
-        System.out.println(cmd);
+        
     }
 
     public static void read() throws IOException {

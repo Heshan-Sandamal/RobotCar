@@ -21,10 +21,6 @@ public class RobotCar {
      */
     public static void main(String[] args) {
         
- 
-        
-
-         System.out.println("nnnn");
          
         try {
             NetworkConnector.ConnectToServer();

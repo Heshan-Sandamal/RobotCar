@@ -45,14 +45,21 @@ public class UserController {
 
     public void setCenterSonarVal(double centerSonarVal) {
         this.centerSonarVal = centerSonarVal;
+        
+        //call gui method to set center sonar value
+        
     }
 
     public void setLeftSonarVal(double leftSonarVal) {
         this.leftSonarVal = leftSonarVal;
+        
+        //call gui method to set left sonar value
     }
 
     public void setRIghtSonarVal(double RIghtSonarVal) {
         this.RIghtSonarVal = RIghtSonarVal;
+        
+        //call gui method to set right sonar value
     }
 
 
