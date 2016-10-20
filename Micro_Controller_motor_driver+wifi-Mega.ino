@@ -178,15 +178,7 @@ void sendSetupCommand(String command){
   delay(3000);
 }
 
-//receive data
-String receiveData(){
-  String response="";
-  while(Serial1.available()==false);
-  while(Serial1.available()){
-      response+=Serial1.readStringUntil('\n');
-  }
-  return response;
-}
+
 
 String extract(String message){
   if(message.indexOf("+IPD")>=0){
