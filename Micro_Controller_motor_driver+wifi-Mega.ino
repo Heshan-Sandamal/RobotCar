@@ -231,7 +231,8 @@ void process(String s){
     }
       
   }
-  sendData();// this will call when some data recieved.So sonar data will be send to the local application 
+  sendData();
+  // this will call when some data recieved.So sonar data will be send to the local application 
 }
 
 
