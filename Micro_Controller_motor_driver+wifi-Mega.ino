@@ -227,6 +227,16 @@ void process(String s){
   // this will call when some data recieved.So sonar data will be send to the local application 
 }
 
+//receive data
+String receiveData(){
+  String response="";
+  
+  while(Serial1.available()==false);
+  while(Serial1.available()){
+      response+=Serial1.readStringUntil('\n');
+  }
+  return response;
+}
 
 void sendData()
 {
@@ -291,10 +301,6 @@ void motor2Rotate(int spd){
   }
 }
 
-
-
-
-
 void Forward(int spd){
   motor2Rotate(spd);
   motor1Rotate(spd);
@@ -311,7 +317,6 @@ void Backward(int spd){
 void TurnLeft(int spd){
   //motor1Rotate(spd-20);   
   motor2Rotate(spd);
-  
   Serial.println("Left");
 }
 
